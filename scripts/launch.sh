@@ -42,7 +42,24 @@ case "$mode" in
     ;;
 esac
 
-# Run cmd as the pane's PTY process. The installed Command Code hook reports
-# working/idle to herdr from inside cmd; this script just hands over the terminal.
+# Resolve the Command Code binary. Prefer the unambiguous names (cmdc,
+# command-code, commandcode) because bare `cmd` collides with Windows CMD.
+# COMMAND_CODE_BIN overrides resolution (used by tests and unusual installs).
+if [ -z "${COMMAND_CODE_BIN:-}" ]; then
+  for candidate in cmdc command-code commandcode cmd; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+      COMMAND_CODE_BIN="$candidate"
+      break
+    fi
+  done
+fi
+if [ -z "${COMMAND_CODE_BIN:-}" ]; then
+  echo "Command Code binary not found (tried cmdc, command-code, commandcode, cmd)" >&2
+  exit 1
+fi
+
+# Run Command Code as the pane's PTY process. The installed Command Code hook
+# reports working/idle to herdr from inside it; this script just hands over the
+# terminal.
 # shellcheck disable=SC2086
-exec cmd $CMD_ARGS
+exec "$COMMAND_CODE_BIN" $CMD_ARGS

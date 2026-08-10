@@ -5,9 +5,11 @@
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 INSTALL="$ROOT/cmd-hooks/install-hooks.mjs"
 
-# Use an isolated HOME so we don't touch the real ~/.commandcode
+# Use an isolated HOME so we don't touch the real ~/.commandcode.
+# USERPROFILE too: Node's os.homedir() reads USERPROFILE (not HOME) on Windows.
 FAKEHOME="$(mktemp -d)"
 export HOME="$FAKEHOME"
+export USERPROFILE="$FAKEHOME"
 CC_DIR="$FAKEHOME/.commandcode"
 SETTINGS="$CC_DIR/settings.json"
 TRUST="$CC_DIR/trusted-hooks.json"

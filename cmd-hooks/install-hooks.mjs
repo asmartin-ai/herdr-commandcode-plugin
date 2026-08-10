@@ -9,6 +9,7 @@
 
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 
@@ -17,8 +18,10 @@ const CC_DIR = join(HOME, ".commandcode");
 const SETTINGS = join(CC_DIR, "settings.json");
 const TRUST = join(CC_DIR, "trusted-hooks.json");
 
-// Absolute path to the hook script next to this installer.
-const HOOK = join(dirname(new URL(import.meta.url).pathname), "herdr-status.sh");
+// Absolute path to the hook script next to this installer. Normalized to
+// forward slashes so `sh <path>` works under Windows shells (cmd.exe, Git Bash)
+// as well as POSIX ones (URL.pathname yields a broken /K:/... path on Windows).
+const HOOK = join(dirname(fileURLToPath(import.meta.url)), "herdr-status.sh").replace(/\\/g, "/");
 const COMMAND = `sh ${HOOK}`;
 
 function sha256slice(s) {

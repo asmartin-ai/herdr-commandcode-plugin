@@ -26,6 +26,9 @@ printf '%s\n' "$(printf '%s\0' "$@" | sed 's/"/\\"/g; s/\x00/","/g; s/^/["/; s/$
 EOF
 chmod +x "$CMD_DIR/cmd"
 export PATH="$CMD_DIR:$PATH"
+# Pin binary resolution to the stub (launch.sh prefers real cmdc/command-code
+# when they exist on PATH).
+export COMMAND_CODE_BIN="$CMD_DIR/cmd"
 
 echo "launch.sh"
 

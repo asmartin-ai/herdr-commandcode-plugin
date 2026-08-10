@@ -1,9 +1,11 @@
-# Agent detection override for Command Code (cmd).
+# Agent detection override for Command Code.
 # Seeded into herdr's agent-detection config dir by scripts/common.sh.
 # Field names follow herdr's agent detection manifest schema; verify with:
 #   herdr api schema --json
+# match_cmdline targets the unambiguous binaries (cmdc/command-code/commandcode);
+# matching bare "cmd" would false-positive on Windows CMD.
 
 [[agent]]
 name = "cmd"
-match_cmdline = ["cmd"]
-alt_cmdline = ["command-code"]
+match_cmdline = ["cmdc"]
+alt_cmdline = ["command-code", "commandcode"]
