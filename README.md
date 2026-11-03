@@ -3,6 +3,11 @@
 Makes [Command Code](https://commandcode.ai) (`cmd`) a first-class agent inside
 [Herdr](https://herdr.dev), the terminal multiplexer for coding agents.
 
+This fork adds Windows support over [upstream](https://github.com/TheMetalStorm/herdr-commandcode-plugin):
+it resolves Command Code executable names without preferring Windows `cmd`,
+avoids matching Windows CMD in agent detection, and normalizes the hook path
+for Windows. The shell scripts require Git Bash on Windows.
+
 - **Lifecycle state** — `idle` on start (green checkmark), `working` during
   processing, `blocked` when asking for input, confirming edits, or approving
   a shell command, `idle` when finished. Status is reported from inside the
@@ -26,10 +31,10 @@ herdr plugin link /path/to/commandcode-herdr-integration
 herdr plugin action invoke commandcode.integration.setup
 ```
 
-From GitHub (after publishing with the `herdr-plugin` topic):
+Install this fork from GitHub:
 
 ```bash
-herdr plugin install <you>/commandcode-herdr
+herdr plugin install asmartin-ai/herdr-commandcode-plugin
 herdr plugin action invoke commandcode.integration.setup
 ```
 
