@@ -153,5 +153,7 @@ claim + Herdr's process detection handle the transition.
 - Launching uses plugin **panes** (real PTYs); actions run detached without a
   TTY and `cmd` requires one.
 - Windows is supported via Git Bash (scripts are POSIX `sh`).
+  Windows CI exercises native Node hook paths and Git Bash command resolution,
+  along with the portable installer, launcher, and common integration tests.
 - Verify agent-detection schema with `herdr api schema --json`; adjust
   `config/agent-detection/cmd.toml` if field names differ on your version.

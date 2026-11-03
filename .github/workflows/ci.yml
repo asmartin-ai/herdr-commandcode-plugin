@@ -27,6 +27,27 @@ jobs:
       - name: Run integration tests
         run: bash tests/run.sh
 
+  windows:
+    name: Windows Git Bash and native Node
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Exercise Windows paths and command resolution
+        shell: bash
+        run: node tests/windows.test.mjs
+      - name: Run portable integration tests
+        shell: bash
+        run: |
+          bash tests/common.test.sh
+          bash tests/install.test.sh
+          bash tests/launch.test.sh
+
   shellcheck:
     name: shellcheck
     runs-on: ubuntu-latest

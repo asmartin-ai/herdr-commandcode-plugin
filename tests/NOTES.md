@@ -9,7 +9,7 @@ Command Code has **no `Exit` hook event**. When the user force-quits the pane
 
 There is **no automated test** proving Herdr flips the pane to `idle`/`unknown`
 on force-quit, because that path is owned by Herdr, not by this plugin. The
-expected behavior (per taste + README): on force-quit the agent state should
+expected behavior (per README): on force-quit the agent state should
 transition to `idle`, not stay stuck on `blocked`/`working`.
 
 To manually verify: open a `commandcode.integration.task` pane, let it reach

@@ -9,7 +9,11 @@ INSTALL="$ROOT/cmd-hooks/install-hooks.mjs"
 # USERPROFILE too: Node's os.homedir() reads USERPROFILE (not HOME) on Windows.
 FAKEHOME="$(mktemp -d)"
 export HOME="$FAKEHOME"
-export USERPROFILE="$FAKEHOME"
+if command -v cygpath >/dev/null 2>&1; then
+  export USERPROFILE="$(cygpath -w "$FAKEHOME")"
+else
+  export USERPROFILE="$FAKEHOME"
+fi
 CC_DIR="$FAKEHOME/.commandcode"
 SETTINGS="$CC_DIR/settings.json"
 TRUST="$CC_DIR/trusted-hooks.json"
@@ -20,7 +24,11 @@ echo "install-hooks.mjs"
 t_title "install creates hooks for 4 events"
 node "$INSTALL" >/dev/null 2>&1
 t_assert_eq "0" "$?" "install exit 0"
-export SET="$SETTINGS"
+if command -v cygpath >/dev/null 2>&1; then
+  export SET="$(cygpath -w "$SETTINGS")"
+else
+  export SET="$SETTINGS"
+fi
 node -e '
 const fs=require("fs");
 const s=JSON.parse(fs.readFileSync(process.env.SET));
@@ -42,7 +50,11 @@ t_assert_eq "1" "$(cat /tmp/n.txt)" "single entry per event"
 
 # 3. trusted-hooks.json has a fingerprint
 t_title "trusted-hooks records fingerprint"
-export TR="$TRUST"
+if command -v cygpath >/dev/null 2>&1; then
+  export TR="$(cygpath -w "$TRUST")"
+else
+  export TR="$TRUST"
+fi
 node -e '
 const fs=require("fs");
 const t=JSON.parse(fs.readFileSync(process.env.TR));

@@ -2,6 +2,9 @@
 .envrc
 .direnv/
 
+# Local Command Code preferences and permissions
+/.commandcode/
+
 # OS
 .DS_Store
 Thumbs.db
